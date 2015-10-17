@@ -1,15 +1,20 @@
 import {
-  AsyncTestCompleter,
   TestComponentBuilder,
   describe,
   expect,
   inject,
+  beforeEachProviders,
   it
 } from 'angular2/testing';
-import {Component, View} from 'angular2/angular2';
+import {AsyncTestCompleter} from 'angular2/testing_internal';
+import {Component, View, bind} from 'angular2/angular2';
 import {DOM} from 'angular2/src/core/dom/dom_adapter';
 import {AboutCmp} from './about';
 import {NameList} from '../../services/name_list';
+
+// workaround this issue: https://github.com/angular/angular/issues/4715
+// about_spec.js is executed first so Provider is available to all other test files.
+beforeEachProviders(() => [bind(AsyncTestCompleter).toValue(new AsyncTestCompleter())]);
 
 export function main() {
   describe('About component', () => {
